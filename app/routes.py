@@ -1,14 +1,21 @@
+from fileinput import filename
+
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.security import generate_password_hash
 from app import db, app
 from app.forms import LoginForm, RegistrationForm
-from app.models import User
-from flask_login import login_user, logout_user, current_user
+from app.models import User, Product
+from flask_login import login_user, logout_user, current_user, login_required
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -21,13 +28,13 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         flash('Account created. You are now able to log in.', 'success')
-        return redirect(url_for('login', form=form))
-    return render_template('register.html', form=form)
+        return redirect(url_for('login'))
+    return render_template('login/register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -38,15 +45,23 @@ def login():
             return redirect(url_for('dashboard'))
 
     flash('Invalid username or password.', 'danger')
-    return render_template('login.html', form=form)
+    return render_template('login/login.html', form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash('You are now logged out.', 'success')
     return redirect(url_for('register'))
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
+    products = Product.query.all()
+    return render_template('dashboard/dashboard.html', products=products)
 
 
 

@@ -31,7 +31,7 @@ import subprocess, os
 def migrate():
     if not os.path.exists("../migrations"):
         subprocess.run(["flask", "db", "init"])
-    subprocess.run(["flask", "db", "migrate", "-m", "Add product model"])
+    subprocess.run(["flask", "db", "migrate", "-m", "Add product and PriceHistory model"])
 
 def upgrade():
     subprocess.run(["flask", "db", "upgrade"])

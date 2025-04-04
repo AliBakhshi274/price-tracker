@@ -23,13 +23,45 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password, password)
 
 class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
     category = db.Column(db.String(50), nullable=False)
-    image_file = db.Column(db.String(100), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(200), nullable=False, default='default.jpg')
+    last_updated = db.Column(db.DateTime, nullable=False)
+    # description = db.Column(db.Text, nullable=False)
+    # price = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
-        return f"Product(name={self.name}, description={self.description}, price={self.price})"
+        return f"Product(name={self.name}, last_updated={self.last_updated}, category={self.category})"
+
+class PriceHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    price = db.Column(db.String, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+    product = db.relationship('Product', backref=db.backref('PriceHistory', lazy=True))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

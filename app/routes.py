@@ -1,6 +1,4 @@
-from lib2to3.fixer_util import is_import
-
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash
 from app import db, app
 from app.forms import LoginForm, RegistrationForm
@@ -54,27 +52,14 @@ def logout():
     flash('You are now logged out.', 'success')
     return redirect(url_for('register'))
 
-# @app.route('/dashboard')
-# @login_required
-# def dashboard():
-#     if not current_user.is_authenticated:
-#         return redirect(url_for('login'))
-#
-#     products = Product.query.all()
-#     return render_template('dashboard/dashboard.html', products=products)
-
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-
     products = Product.query.all()
-    print(f"Products ----------------> : {products}")
-    product , chart_data = views.product_chart(2)
-    print(f"product ===============>: {product}")
-    print(f"chart_data ........................> : {chart_data}")
-    print(chart_data['labels'])
+    # manually changed ....
+    product , chart_data = views.product_chart(20)
     return render_template(
         'dashboard/dashboard.html',
         products=products,

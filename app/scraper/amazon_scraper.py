@@ -1,3 +1,5 @@
+import random
+import time
 from selenium import webdriver
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
@@ -11,23 +13,33 @@ from datetime import datetime, timezone
 def scrape_amazon(product_name, category):
     options = webdriver.ChromeOptions()
     # options.add_argument('--headless')
+    options.add_argument('--start-maximized')
     options.add_argument(
-        "user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
-    options.add_argument("accept-language=de-DE,de;q=0.9")
-    options.add_argument("geo-location=DE")
-    options.add_argument("--timezone=Europe/Berlin")
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    options.add_argument("accept-language=en-US,en;q=0.9")
+    options.add_argument("accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+    options.add_argument("referer=https://www.google.com/")
     options.add_experimental_option("prefs", {"profile.default_content_setting_values.geolocation": 1})
-    options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("detach", True)
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    options.add_argument('--disable-blink-features=AutomationControlled')
 
     driver = webdriver.Chrome(options=options)
+    driver.execute_cdp_cmd('Network.setUserAgentOverride', {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    })
     wait = WebDriverWait(driver, 10)
     try:
         driver.get("https://www.amazon.com/")
 
         search_box = driver.find_element(By.ID, "twotabsearchtextbox")
+
+        time.sleep(random.uniform(1, 3))
         search_box.send_keys(product_name)
+        time.sleep(random.uniform(0.5, 1.5))
         search_box.send_keys(Keys.RETURN)
+
         product_element = wait.until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, "div.s-main-slot div[data-component-type='s-search-result']"))
@@ -37,10 +49,11 @@ def scrape_amazon(product_name, category):
         except NoSuchElementException:
             name = "N/A"
         try:
-            price = product_element.find_element(By.CSS_SELECTOR,
-                                         "div.a-section.a-spacing-none.a-spacing-top-mini span.a-color-base").text
+            temp = product_element.find_element(By.CSS_SELECTOR,
+                                                "div.a-section.a-spacing-none.a-spacing-top-mini span.a-color-base").text
+            price = float(temp.split('$')[1])
         except NoSuchElementException:
-            price = "N/A"
+            price = 0
         try:
             image = product_element.find_element(By.CSS_SELECTOR, "img.s-image").get_attribute("src")
         except NoSuchElementException:
@@ -59,7 +72,7 @@ def scrape_amazon(product_name, category):
         price_entry = PriceHistory(product_id=product.id, price=price, date=datetime.now(timezone.utc))
         db.session.add(price_entry)
         db.session.commit()
-        
+
         print(f"insert: {name} / {price}")
 
     except TimeoutException:

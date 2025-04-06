@@ -1,4 +1,4 @@
-from fileinput import filename
+from lib2to3.fixer_util import is_import
 
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.security import generate_password_hash
@@ -6,7 +6,7 @@ from app import db, app
 from app.forms import LoginForm, RegistrationForm
 from app.models import User, Product
 from flask_login import login_user, logout_user, current_user, login_required
-
+import app.views as views
 
 @app.route('/')
 def index():
@@ -54,15 +54,33 @@ def logout():
     flash('You are now logged out.', 'success')
     return redirect(url_for('register'))
 
-@app.route('/dashboard')
+# @app.route('/dashboard')
+# @login_required
+# def dashboard():
+#     if not current_user.is_authenticated:
+#         return redirect(url_for('login'))
+#
+#     products = Product.query.all()
+#     return render_template('dashboard/dashboard.html', products=products)
+
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
 
     products = Product.query.all()
-    return render_template('dashboard/dashboard.html', products=products)
-
+    print(f"Products ----------------> : {products}")
+    product , chart_data = views.product_chart(2)
+    print(f"product ===============>: {product}")
+    print(f"chart_data ........................> : {chart_data}")
+    print(chart_data['labels'])
+    return render_template(
+        'dashboard/dashboard.html',
+        products=products,
+        product=product,
+        chart_data=chart_data
+    )
 
 
 

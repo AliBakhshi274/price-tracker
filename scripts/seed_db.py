@@ -82,7 +82,7 @@ def seed_database():
             db.session.commit()
 
 if __name__ == "__main__":
-    os.makedirs("app/static/images", exist_ok=True)
+    os.makedirs("../app/static/images", exist_ok=True)
     seed_database()
     print("Fake data generation completed!...")
 

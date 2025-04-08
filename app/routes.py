@@ -1,12 +1,10 @@
-from fileinput import filename
-
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash
 from app import db, app
 from app.forms import LoginForm, RegistrationForm
 from app.models import User, Product
 from flask_login import login_user, logout_user, current_user, login_required
-
+import app.views as views
 
 @app.route('/')
 def index():
@@ -54,15 +52,20 @@ def logout():
     flash('You are now logged out.', 'success')
     return redirect(url_for('register'))
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-
     products = Product.query.all()
-    return render_template('dashboard/dashboard.html', products=products)
-
+    # manually changed ....
+    product , chart_data = views.product_chart(20)
+    return render_template(
+        'dashboard/dashboard.html',
+        products=products,
+        product=product,
+        chart_data=chart_data
+    )
 
 
 

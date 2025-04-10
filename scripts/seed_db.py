@@ -37,13 +37,13 @@ def download_image(url, save_path):
 
 def generate_fake_prices(base_price):
     prices = []
-    for i in range(4 * 30):
-        date = datetime.now() - timedelta(days=(4*30) - i)
+    for i in range(5 * 30):
+        date = datetime.now() - timedelta(days=(5 * 30) - i)
         fluctuation = random.uniform(-0.5, 0.5)
         price = round(base_price * (1 + fluctuation), 2)
         prices.append(
             {
-                "price": f"${price}",
+                "price": f"{price}",
                 "date": date,
             }
         )
@@ -57,8 +57,8 @@ def seed_database():
         db.session.commit()
 
         for i, product_info in enumerate(products_data):
-            # img_path = f"app/static/images/product_{i}.jpg"
-            # download_image(image_urls[i],img_path)
+            img_path = f"../app/static/images/db/product-{i}.png"
+            download_image(image_urls[i],img_path)
 
             base_price = random.uniform(300, 1500)
 

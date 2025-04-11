@@ -85,9 +85,3 @@ if __name__ == "__main__":
     os.makedirs("../app/static/images", exist_ok=True)
     seed_database()
     print("Fake data generation completed!...")
-
-#scrape on amazon
-    # scrape_amazon("tab samsung s10 plus", "Tablet")
-    # scrape_amazon("Galaxy s25 ultra", "Mobile")
-    # scrape_amazon("ps5", "Game")
-    # scrape_amazon("Iphone 15 pro", "Mobile")

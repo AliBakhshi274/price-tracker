@@ -1,6 +1,8 @@
-.idea/
-.env
+app/static/images/db
 app/__pycache__/
 __pycache__/
+.idea/
+.vscode/
+.env
 migrations
-app/static/images/db
+

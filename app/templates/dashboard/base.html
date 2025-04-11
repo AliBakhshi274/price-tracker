@@ -1,22 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" sizes="76x76" href="../../static/argon-dashboard/assets/img/apple-icon.png">
     <link rel="icon" type="image/png"
-          href="{{ url_for('static', filename='argon-dashboard/assets/img/favicon.png') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='argon-dashboard/assets/css/argon-dashboard.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='argon-dashboard/assets/css/nucleo-icons.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='argon-dashboard/assets/css/nucleo-svg.css') }}">
+          href="{{ url_for('static', filename='images/icons/favicon.png') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nucleo-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nucleo-svg.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="../../static/css/main.css">
     <link rel="stylesheet" href="../../static/css/util.css">
-    <link id="pagestyle" href="../../static/argon-dashboard/assets/css/argon-dashboard.css?v=2.1.0" rel="stylesheet"/>
+    <link id="pagestyle" href="../../static/css/dashboard.css?v=2.1.0" rel="stylesheet"/>
 
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -29,8 +27,8 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
            aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="dashboard.html">
-            <img src="../../static/argon-dashboard/assets/img/logo-ct-dark.png" width="26px" height="26px"
+        <a class="navbar-brand m-0" href="dashboard">
+            <img src="../../static/images/logo-ct-dark.png" width="26px" height="26px"
                  class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold">Price Tracker</span>
         </a>
@@ -39,58 +37,18 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="dashboard.html">
+                <a class="nav-link active" href="dashboard">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-tv-2 text-dark text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/tables.html">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Tables</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/billing.html">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Billing</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/virtual-reality.html">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Virtual Reality</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/rtl.html">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-world-2 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">RTL</span>
-                </a>
-            </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/profile.html">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/sign-in.html">
+                <a class="nav-link" href="login">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-copy-04 text-dark text-sm opacity-10"></i>
                     </div>
@@ -98,11 +56,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="../../static/argon-dashboard/pages/sign-up.html">
+                <a class="nav-link " href="register">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-collection text-dark text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Sign Up</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="logout">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Logout</span>
                 </a>
             </li>
         </ul>
@@ -116,40 +82,6 @@
 </main>
 
 {% block scripts %}{% endblock %}
-
-<!-- Billboard Carousel -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const items = document.querySelectorAll('.carousel-item');
-        let currentIndex = 0;
-        const totalItems = items.length;
-        let interval;
-
-        function showNext() {
-            items[currentIndex].classList.remove('active');
-            items[currentIndex].classList.add('prev');
-
-            currentIndex = (currentIndex + 1) % totalItems;
-
-            items[currentIndex].classList.remove('prev');
-            items[currentIndex].classList.add('active');
-        }
-
-        function startCarousel() {
-            interval = setInterval(showNext, 3000);
-        }
-
-        startCarousel();
-
-        document.querySelector('.carousel-inner').addEventListener('mouseenter', () => {
-            clearInterval(interval);
-        });
-
-        document.querySelector('.carousel-inner').addEventListener('mouseleave', () => {
-            startCarousel();
-        });
-    });
-</script>
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>

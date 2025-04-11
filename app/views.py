@@ -1,7 +1,3 @@
-"""
-- set methods relevant to views
-"""
-
 from datetime import datetime, timedelta, timezone
 from app.models import Product, PriceHistory
 from ml.price_predictor import predict_price
@@ -14,15 +10,15 @@ def common_product_chart(product_id):
         PriceHistory.product_id == product_id,
         PriceHistory.date >= last_4_month
     ).order_by(PriceHistory.date.asc()).all()
+    yesterday = (datetime.now() - timedelta(days=1)).date()
 
-
-    chart_data = {
-        'labels': [entry.date.strftime('%Y-%m-%d') for entry in history if entry.date.day==1],
-        'prices': [entry.price for entry in history if entry.date.day==1],
+    common_chart_date = {
+        'labels': [entry.date.strftime('%Y-%m-%d') for entry in history if entry.date.day==1 or entry.date.date()==yesterday],
+        'prices': [entry.price for entry in history if entry.date.day==1 or entry.date.date()==yesterday],
         'product_name': product.name,
     }
 
-    return product, chart_data
+    return product, common_chart_date
 
 def forecast_product_chart(product_id):
     # list of prices for 7 days later

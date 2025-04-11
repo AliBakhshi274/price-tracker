@@ -30,13 +30,6 @@ def predict_price(product_id, days_ahead=7):
 
     predicted_prices = model.predict(future_days)
 
-    # predict prices for 7 days later
-    # predict_prices = []
-    # for i in range(0, 7):
-    #     temp = round(model.predict(future_days)[i], 2)
-    #     predict_prices.append(temp)
-    # predicted_price = model.predict(future_day)[0]
-
     return [round(price, 2) for price in predicted_prices]
 
 

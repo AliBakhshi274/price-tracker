@@ -1,12 +1,11 @@
 import random
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, jsonify
 from werkzeug.security import generate_password_hash
 from app import db, app
 from app.forms import LoginForm, RegistrationForm
 from app.models import User, Product
 from flask_login import login_user, logout_user, current_user, login_required
 import app.views as views
-from ml.price_predictor import predict_price
 
 
 @app.route('/')
@@ -67,38 +66,24 @@ def dashboard():
     products = Product.query.all()
     # randomly change the product_id ....
     random_product = random.choice(products)
-    product, chart_data = views.common_product_chart(random_product.id)
+    product, common_chart_data = views.common_product_chart(random_product.id)
     forecast_data = views.forecast_product_chart(random_product.id)
-    # predict_prices_list = predict_price(random_product.id)
     return render_template(
         'dashboard/dashboard.html',
         products=products,
         product=product,
-        chart_data=chart_data,
+        common_chart_data=common_chart_data,
         forecast_data=forecast_data
     )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/product_data/<int:product_id>', methods=['GET', 'POST'])
+@login_required
+def product_data(product_id):
+    product, common_chart_data = views.common_product_chart(product_id)
+    forecast_data = views.forecast_product_chart(product_id)
+    return jsonify({
+        'common_chart_data': common_chart_data,
+        'forecast_data': forecast_data,
+        'product': {'name': product.name}
+    })
